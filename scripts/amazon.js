@@ -1,3 +1,6 @@
+import {cart} from '../data/cart.js';
+import {products} from '../data/products.js';
+
 console.log("Amazon script loaded");
 let productsHtml = '';
 products.forEach((product) => {
@@ -41,10 +44,10 @@ products.forEach((product) => {
 
           <div class="product-spacer"></div>
 
-          <div class="added-to-cart">
-            <img src="images/icons/checkmark.png">
-            Added
-          </div>
+            <div class="added-to-cart js-added-to-cart-${product.id}">
+              <img src="images/icons/checkmark.png">
+              Added
+            </div>
   
           <button class="add-to-cart-button button-primary js-add-to-cart"
           data-product-id="${product.id}">
@@ -56,9 +59,10 @@ products.forEach((product) => {
 document.querySelector('.products-grid').innerHTML = productsHtml;
 
 document.querySelectorAll('.js-add-to-cart').forEach((button) => {
+  let timeoutId;
     button.addEventListener('click', (event) => {
         console.log('Add to cart button clicked');
-        const productId = button.dataset.productId;
+        const {productId} = button.dataset;   // shortened destructuring syntax
         const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`);
         console.log('Selected quantity:', quantitySelector.value);
         let matchingItem;
@@ -83,5 +87,12 @@ document.querySelectorAll('.js-add-to-cart').forEach((button) => {
           cartQuantity += item.quantity;
         });
         document.querySelector('.js-cart-quantity').innerText = cartQuantity;
-    }); 
+        const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`);
+        addedMessage.classList.add('added-to-cart-visible');
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+          addedMessage.classList.remove('added-to-cart-visible');
+        }, 1000);
+        console.log(addedMessage)
+      }); 
 });
