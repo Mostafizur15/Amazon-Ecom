@@ -1,10 +1,11 @@
 import {cart,addToCart} from '../data/cart.js';
 import {products} from '../data/products.js';
+import {formateCurrency} from '../utils/money.js';
 
 console.log("Amazon script loaded");
 let productsHtml = '';
 products.forEach((product) => {
-  
+
     productsHtml += `
     <div class="product-container">
           <div class="product-image-container">
@@ -25,7 +26,7 @@ products.forEach((product) => {
           </div>
 
           <div class="product-price">
-            ${(product.priceCents / 100).toFixed(2)}
+            ${formateCurrency(product.priceCents)}
           </div>
 
           <div class="product-quantity-container">
