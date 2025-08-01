@@ -4,6 +4,7 @@ import {products} from '../data/products.js';
 console.log("Amazon script loaded");
 let productsHtml = '';
 products.forEach((product) => {
+  
     productsHtml += `
     <div class="product-container">
           <div class="product-image-container">
@@ -65,7 +66,7 @@ function updateCartQuantity() {
   });
   document.querySelector('.js-cart-quantity').innerText = cartQuantity;
 }
-let timeoutId;
+//let timeoutId;
 function addedMessage(productId) {
   const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`);
   addedMessage.classList.add('added-to-cart-visible');
@@ -75,6 +76,7 @@ function addedMessage(productId) {
   }, 1000);
 }
 document.querySelectorAll('.js-add-to-cart').forEach((button) => {
+    let timeoutId;
     button.addEventListener('click', (event) => {
         console.log('Add to cart button clicked');
         const {productId} = button.dataset;   // shortened destructuring syntax
@@ -83,7 +85,13 @@ document.querySelectorAll('.js-add-to-cart').forEach((button) => {
         
         addToCart(productId, quantitySelector);
         updateCartQuantity();
-        addedMessage(productId);
+       // addedMessage(productId);
+        const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`);
+        addedMessage.classList.add('added-to-cart-visible');
+        clearTimeout(timeoutId);
+        timeoutId= setTimeout(() => {
+          addedMessage.classList.remove('added-to-cart-visible');
+        }, 1000);
         console.log('Cart after adding:', cart);
       }); 
 });
